@@ -1,0 +1,27 @@
+services:
+    app1:
+        image: ${IMAGE_NAME_APP1}:${IMAGE_TAG_APP1}
+        restart: always
+        networks:
+            - webnet
+
+    app2:
+        image: ${IMAGE_NAME_APP2}:${IMAGE_TAG_APP2}
+        restart: always
+        networks:
+            - webnet
+
+    nginx:
+        image: nginx:stable-alpine
+        ports:
+            - "80:80"
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf:ro
+        depends_on:
+            - app1
+            - app2
+        networks:
+            - webnet
+
+networks:
+    webnet:
